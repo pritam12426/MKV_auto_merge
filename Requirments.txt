@@ -1,0 +1,4 @@
+getpass
+rich==11.2.0
+pygame==2.3.0
+pymkv
