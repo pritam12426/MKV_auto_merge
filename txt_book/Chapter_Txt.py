@@ -21,7 +21,7 @@ if n != 1:
 open(f"{file_name}_Chater.txt", "w") # Will make sure that "file chater.txt" is empity.
 
 
-def write(file_name):
+def write():
 
 	chapter = 1
 	while(True):
@@ -37,3 +37,4 @@ def write(file_name):
 				file.write(str(f'CHAPTER{chapter}NAME={name.title()}\n')) # Will write the chagne name.
 				chapter += 1
 
+write()
