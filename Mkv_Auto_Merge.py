@@ -1,17 +1,45 @@
 print("Loding...")
-import os, pymkv
+import os
+import pymkv
 from sys import platform
 from rich.tree import Tree
-from rich.progress import track
 from rich.console import Console
 from rich.panel import Panel
-# from pygame import mixer, mixer_music
+from time import time, sleep, strftime, localtime, gmtime
 
 
-# def addChapter(video_name):
-# 	with open(video_name) as chapter:
-# 		chapter = chapter.read()
-# 	pass
+def addChapter(name):
+	chapter = 1
+	if os.path.exists(path + vdo_name + "_Chater.txt"):
+		open(path + vdo_name + "_Chater.txt", "w")
+
+	with open(name, "rt") as file:
+		for line in file:
+			line = file.readline()
+			if ":" in line and line[0:2].isdigit() and line[2] == ":" and line[3].isdigit():
+				time_parts, name = line.split(" ", maxsplit=1)
+				
+				time_parts = time_parts.split(":")
+				if len(time_parts) == 1:
+					time_parts = ['00', '00', '00'] + time_parts
+
+				elif len(time_parts) == 2:
+					time_parts = ['00'] + time_parts	
+
+				time_parts = ':'.join(time_parts)
+				
+				
+				name = name.split()
+				name = " ".join(name)
+				name = name.replace(name[0], name[0].upper())
+			
+				with open(f'{path + vdo_name}_Chater.txt', 'a') as file1:
+					file1.write(str(f'CHAPTER{chapter}={time_parts}.000\n')) # Will write the timeing of chapter.
+					file1.write(str(f'CHAPTER{chapter}NAME={name}\n')) # Will write the chagne name.
+					chapter += 1
+					
+	return path + vdo_name + "_Chater.txt"
+
 
 
 def findTypeSystem():
@@ -22,7 +50,9 @@ def findTypeSystem():
 		return "clear", "/"
 	
 	else:
-		exit(Console().print("[color(9) bold u]Unsupported sytem[/]:"))
+		Console().print("[color(9) bold u]Unsupported system[/]:")
+		sleep(3)
+		exit()
 
 
 formate = lambda name: name.replace("_", " ").replace("  ", "_").replace(" ", "_").replace("__", "_").title()
@@ -56,10 +86,10 @@ print("")
 
 
 if lan.lower() == "h":
-    lan = "hin"
-    
+	lan = "hin"
+
 elif lan.lower() == "e":
-	lan = "eng" 
+	lan = "eng"
 
 else:
 	lan = "mul"
@@ -84,10 +114,8 @@ for i in all_file:
 			merge.add_track(pymkv.MKVTrack(path + vdo_name + ".srt", track_name=formate(vdo_name), language="eng"))
 			vd.add(f":card_file_box:  [color(11) bold]{vdo_name}.srt[/] >>> [color(11) bold]for subtitle.[/]")
 
-
 		if f"{vdo_name}.txt" in all_file:
-			pass
-			# merge.add_track(vdo_name + ".txt")
+			merge.chapters(addChapter(vdo_name + ".txt"))
 			vd.add(f":clapper: [color(9) bold]{vdo_name}.txt[/] >>> [color(9)]for time stamp.[/]")
 
 		if f"{vdo_name}.jpg" in all_file:
@@ -95,7 +123,6 @@ for i in all_file:
 			vd.add(f":clipboard: [color(12) bold]{vdo_name}.jpg[/] >>> [color(12)]for album cover.[/]") 
 
 		Console().print(Panel(tree, title="[color(11) bold u]RECOGNIZE[/]: Found corresponding file form", subtitle="[color(9) b i u]All above files are going to merge.[/]", subtitle_align= "right"))
-
 
 		while True:
 			output_path = input("\nOutput path folder path or [^+c] ? > ")
@@ -111,16 +138,17 @@ for i in all_file:
 			else:
 				Console().print(f"\n[color(9) bold]FOLDER NOT FOUND[/]: No '[color(14) bold]{output_path}[/]' :eyes: directory in your system.\nTry again..\n")
 		
-		Console().print(f"\nMerging files it may take few time.", style=("color(10) i bold\n"))
+		Console().print(f"\nMerging files it may take some minutes.", style=("color(10) i bold\n"))
 
 		try:
-			merge.mux(output_path + formate(vdo_name)+ ".mkv", silent=True)
+			init = time()
+			merge.mux(output_path + formate(vdo_name)+".mkv", silent=True)
 
 		except Exception as e:
 			exit(e)
 
 		else:
-			print("\nDONE\n")
+			Console().print(f"[color(11) b]DONE: [/]Totle time taken for merging {formate(vdo_name)}.mkv >>> [color(14) b u]{strftime('%H:%M:%S', gmtime(time() - init))}[/]")
 
 if run:
 	exit(Console().print(f"\n[color(9) bold]NO VIDEO FOUND:[/] No file endswith '.mp4' or '.mkv' in '[color(14) bold i]{path}[/]' :eyes: folder.\n"))
