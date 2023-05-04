@@ -1,17 +1,17 @@
-print("Loding...")
+print("Loading...")
 import os
 import pymkv
 from sys import platform
 from rich.tree import Tree
 from rich.console import Console
 from rich.panel import Panel
-from time import time, sleep, strftime, localtime, gmtime
+from time import time, sleep, strftime, gmtime
 
 
 def addChapter(name):
 	chapter = 1
-	if os.path.exists(path + vdo_name + "_Chater.txt"):
-		open(path + vdo_name + "_Chater.txt", "w")
+	if os.path.exists(path + vdo_name + "_Chapter.txt"):
+		open(path + vdo_name + "_Chapter.txt", "w")
 
 	with open(name, "rt") as file:
 		for line in file:
@@ -33,12 +33,12 @@ def addChapter(name):
 				name = " ".join(name)
 				name = name.replace(name[0], name[0].upper())
 			
-				with open(f'{path + vdo_name}_Chater.txt', 'a') as file1:
-					file1.write(str(f'CHAPTER{chapter}={time_parts}.000\n')) # Will write the timeing of chapter.
-					file1.write(str(f'CHAPTER{chapter}NAME={name}\n')) # Will write the chagne name.
+				with open(f'{path + vdo_name}_Chapter.txt', 'a') as file1:
+					file1.write(str(f'CHAPTER{chapter}={time_parts}.000\n'))  # Will write the timeing of chapter.
+					file1.write(str(f'CHAPTER{chapter}NAME={name}\n'))  # Will write the chapter name.
 					chapter += 1
 					
-	return path + vdo_name + "_Chater.txt"
+	return path + vdo_name + "_Chapter.txt"
 
 
 
@@ -139,16 +139,21 @@ for i in all_file:
 				Console().print(f"\n[color(9) bold]FOLDER NOT FOUND[/]: No '[color(14) bold]{output_path}[/]' :eyes: directory in your system.\nTry again..\n")
 		
 		Console().print(f"\nMerging files it may take some minutes.", style=("color(10) i bold\n"))
+		print("")
 
 		try:
 			init = time()
-			merge.mux(output_path + formate(vdo_name)+".mkv", silent=True)
+			merge.mux(output_path + formate(vdo_name)+".mkv")
 
 		except Exception as e:
 			exit(e)
 
 		else:
-			Console().print(f"[color(11) b]DONE: [/]Totle time taken for merging {formate(vdo_name)}.mkv >>> [color(14) b u]{strftime('%H:%M:%S', gmtime(time() - init))}[/]")
+			Console().print(f"\n[color(11) b]DONE: [/]Total time taken for merging:")
+			print(formate(vdo_name) + ".mkv",end=" ") 
+			Console().print(f">>> [color(14) b u]{strftime('%H:%M:%S', gmtime(time() - init))}[/]")
+			Console().print(f"\nA 'mkv' file is waiting for you in [color(11) bold i]{output_path}[/] directory.")
+
 
 if run:
 	exit(Console().print(f"\n[color(9) bold]NO VIDEO FOUND:[/] No file endswith '.mp4' or '.mkv' in '[color(14) bold i]{path}[/]' :eyes: folder.\n"))
