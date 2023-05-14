@@ -11,11 +11,11 @@ from time import time, sleep, strftime, gmtime
 def addChapter(name):
 	chapter = 1
 	if os.path.exists(path + vdo_name + "_Chapter.txt"):
-		open(path + vdo_name + "_Chapter.txt", "w")
+		f = open(path + vdo_name + "_Chapter.txt", "w")
+		f.close()
 
 	with open(name, "rt") as file:
 		for line in file:
-			line = file.readline()
 			if ":" in line and line[0:2].isdigit() and line[2] == ":" and line[3].isdigit():
 				time_parts, name = line.split(" ", maxsplit=1)
 

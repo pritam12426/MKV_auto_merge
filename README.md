@@ -56,7 +56,11 @@ To ensure successful merging, it is important to keep all the files that need to
 
 ## How to get it
 
-#### To get started with MKV AUTO MERGE, clone the repl using the following command in your terminal:
+### To get started with MKV AUTO MERGE, clone the repl using the following command in your terminal:
+
+### Install mkvtoolnix in your system
+
+#### [MKV Merge](https://mkvtoolnix.download/downloads.html)
 
 ```sh
 git clone https://github.com/pritam12426/MKV_auto_merge.git
