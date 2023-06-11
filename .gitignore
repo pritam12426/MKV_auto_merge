@@ -189,5 +189,5 @@ pyrightconfig.json
 .history
 .ionide
 
- temp.*
- Rubbish/
+Rubbish/temp.py
+Rubbish/
